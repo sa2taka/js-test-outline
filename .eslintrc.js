@@ -22,5 +22,5 @@ module.exports = {
     'no-throw-literal': 'warn',
     semi: 'off',
   },
-  ignorePatterns: ['out', 'dist', '**/*.d.ts'],
+  ignorePatterns: ['out', 'dist', '**/*.d.ts', '**/*.js'],
 };

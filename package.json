@@ -9,17 +9,61 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:js-test-outline.helloWorld"
-  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sa2taka/js-test-outline"
+  },
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "js-test-outline.helloWorld",
-        "title": "Hello World"
+    "views": {
+      "test": [
+        {
+          "type": "tree",
+          "id": "js-test-outline-view",
+          "name": "JS Test Outline",
+          "icon": "$(testing-show-as-list-icon)"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "JS Test Outline",
+      "properties": {
+        "js-test-outline.testSourceRoots": {
+          "type": "array",
+          "default": [
+            "__tests__",
+            "__specs__",
+            "__test__",
+            "__spec__",
+            "tests",
+            "specs",
+            "test",
+            "spec"
+          ],
+          "description": "Roots of test to start exploring."
+        },
+        "js-test-outline.testFileSuffix": {
+          "type": "string",
+          "default": ".test",
+          "description": "Suffix to determine if the file is a test."
+        },
+        "js-test-outline.groupNames": {
+          "type": "array",
+          "default": [
+            "describe"
+          ],
+          "description": "function name that creating test groups(e.g. describe)"
+        },
+        "js-test-outline.testNames": {
+          "type": "array",
+          "default": [
+            "it",
+            "test"
+          ],
+          "description": "function name that declare test(e.g. test, it)"
+        }
       }
-    ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "yarn run package",
@@ -27,7 +71,7 @@
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
     "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
+    "watch-tests": "tsc -ip . -w --outDir out",
     "lint": "eslint src --ext ts",
     "test": "jest"
   },
@@ -52,28 +96,10 @@
   "dependencies": {
     "typescript": "^4.7.4"
   },
-  "configuration": {
-    "title": "JS Test Outline",
-    "properties": {
-      "js-test-outline.testSourceRoots": {
-        "type": "array",
-        "default": [
-          "__tests__",
-          "__specs__",
-          "__test__",
-          "__spec__",
-          "tests",
-          "specs",
-          "test",
-          "spec"
-        ],
-        "description": "Roots of test to start exploring."
-      },
-      "js-test-outline.testFileSuffix": {
-        "type": "string",
-        "default": ".test",
-        "description": "Suffix to determine if the file is a test."
-      }
-    }
-  }
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact"
+  ]
 }
