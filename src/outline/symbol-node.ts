@@ -19,13 +19,6 @@ export class SymbolNode extends TreeItem {
   name: string;
   description: string | undefined;
 
-  // if false, all of the children will not be visible
-  open: boolean;
-  // if false, only this node itself will not be visible
-  display: boolean;
-
-  highlight: boolean;
-
   children: Array<SymbolNode>;
 
   public command: Command = {
@@ -55,10 +48,7 @@ export class SymbolNode extends TreeItem {
     };
     this.name = name;
     this.description = expression;
-    this.open = true;
     this.children = [];
-    this.display = true;
-    this.highlight = false;
     this.iconPath = this.#suggestIcon();
   }
 

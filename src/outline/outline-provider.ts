@@ -6,8 +6,6 @@ import {
   TextDocument,
   TreeDataProvider,
   TreeItem,
-  Uri,
-  WebviewView,
   window,
   workspace,
 } from 'vscode';
@@ -21,21 +19,14 @@ export type OutlineProviderConfig = {
 };
 
 export class OutlineProvider implements TreeDataProvider<SymbolNode> {
-  viewType = 'outline-map-view';
   context: ExtensionContext;
-  outlineRoot: SymbolNode | undefined;
-  view: WebviewView | undefined;
-  #extensionUri: Uri;
   lastSelectedLine: number | undefined;
-  indexes: Map<number, SymbolNode>;
   roots: SymbolNode[] | undefined;
 
   constructor(context: ExtensionContext, private config: OutlineProviderConfig) {
     this.context = context;
-    this.#extensionUri = context.extensionUri;
 
     this.#initEventListeners();
-    this.indexes = new Map<number, SymbolNode>();
   }
 
   getTreeItem(element: SymbolNode): TreeItem | Thenable<TreeItem> {
@@ -66,15 +57,6 @@ export class OutlineProvider implements TreeDataProvider<SymbolNode> {
 
       this.refresh();
     }, this);
-
-    // scroll
-    window.onDidChangeTextEditorVisibleRanges((event) => {
-      // TODO
-    });
-
-    window.onDidChangeTextEditorSelection((event) => {
-      // TODO
-    });
 
     // edit
     workspace.onDidChangeTextDocument(async (event) => {
