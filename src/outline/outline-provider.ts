@@ -70,11 +70,30 @@ export class OutlineProvider implements TreeDataProvider<SymbolNode> {
   }
 
   async #buildView(textDocument: TextDocument): Promise<void> {
-    const sourceFile = compile(textDocument.getText());
+    const compileConfig = this.#getCompileConfig(textDocument);
+    if (!compileConfig) {
+      this.roots = [];
+      return;
+    }
+    const sourceFile = compile(textDocument.getText(), compileConfig);
 
     const tree: SymbolNode[] = visitTestNode(sourceFile, this.config, sourceFile);
 
     this.roots = tree;
+  }
+
+  #getCompileConfig(textDocument: TextDocument): { isJs: boolean; isReact: boolean } | undefined {
+    switch (textDocument.languageId) {
+      case 'javascriptreact':
+        return { isJs: true, isReact: true };
+      case 'javascript':
+        return { isJs: true, isReact: false };
+      case 'typescriptreact':
+        return { isJs: false, isReact: true };
+      case 'typescript':
+        return { isJs: false, isReact: false };
+    }
+    return undefined;
   }
 
   private _onDidChangeTreeData: EventEmitter<SymbolNode | undefined | null | void> = new EventEmitter<

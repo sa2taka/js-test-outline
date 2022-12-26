@@ -1,4 +1,4 @@
-import { createSourceFile, Node, ScriptKind, ScriptTarget, SourceFile } from 'typescript';
+import { createSourceFile, ScriptKind, ScriptTarget, SourceFile } from 'typescript';
 
 export const compile = (code: string, config = { isReact: false, isJs: false }): SourceFile => {
   return createSourceFile('_.ts', code, ScriptTarget.ESNext, true, guessKind(config));

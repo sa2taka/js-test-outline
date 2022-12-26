@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import path = require('path');
 import * as vscode from 'vscode';
 
 export const getTestsRoots = (): string[] => {
