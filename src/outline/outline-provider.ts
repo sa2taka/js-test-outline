@@ -1,5 +1,6 @@
 import {
-  CancellationToken,
+  Event,
+  EventEmitter,
   ExtensionContext,
   ProviderResult,
   TextDocument,
@@ -56,7 +57,14 @@ export class OutlineProvider implements TreeDataProvider<SymbolNode> {
   #initEventListeners() {
     // switch tabs
     window.onDidChangeActiveTextEditor((event) => {
-      // TODO
+      const textDocument = window.activeTextEditor?.document || event?.document;
+      if (textDocument) {
+        this.#buildView(textDocument);
+      } else {
+        this.roots = [];
+      }
+
+      this.refresh();
     }, this);
 
     // scroll
@@ -71,6 +79,7 @@ export class OutlineProvider implements TreeDataProvider<SymbolNode> {
     // edit
     workspace.onDidChangeTextDocument(async (event) => {
       this.#buildView(window.activeTextEditor?.document || event.document);
+      this.refresh();
     });
 
     if (window.activeTextEditor) {
@@ -84,5 +93,14 @@ export class OutlineProvider implements TreeDataProvider<SymbolNode> {
     const tree: SymbolNode[] = visitTestNode(sourceFile, this.config);
 
     this.roots = tree;
+  }
+
+  private _onDidChangeTreeData: EventEmitter<SymbolNode | undefined | null | void> = new EventEmitter<
+    SymbolNode | undefined | null | void
+  >();
+  readonly onDidChangeTreeData: Event<SymbolNode | undefined | null | void> = this._onDidChangeTreeData.event;
+
+  refresh(): void {
+    this._onDidChangeTreeData.fire();
   }
 }
