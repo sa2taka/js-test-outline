@@ -28,25 +28,6 @@
     "configuration": {
       "title": "JS Test Outline",
       "properties": {
-        "js-test-outline.testSourceRoots": {
-          "type": "array",
-          "default": [
-            "__tests__",
-            "__specs__",
-            "__test__",
-            "__spec__",
-            "tests",
-            "specs",
-            "test",
-            "spec"
-          ],
-          "description": "Roots of test to start exploring."
-        },
-        "js-test-outline.testFileSuffix": {
-          "type": "string",
-          "default": ".test",
-          "description": "Suffix to determine if the file is a test."
-        },
         "js-test-outline.groupNames": {
           "type": "array",
           "default": [
