@@ -1,4 +1,4 @@
-import { commands, ExtensionContext, window } from 'vscode';
+import { commands, ExtensionContext, Position, window } from 'vscode';
 import { getActiveWorkspace, getGroupNames, getTestNames } from './config';
 import { OutlineProvider } from './outline/outline-provider';
 import { SymbolNode } from './outline/symbol-node';
@@ -19,7 +19,15 @@ export const activate = async (context: ExtensionContext) => {
   window.registerTreeDataProvider('js-test-outline-view', provider);
 
   commands.registerCommand('js-test-outline.moveTo', (symbolNode: SymbolNode) => {
-    console.log(symbolNode);
+    const start = new Position(symbolNode.range.start.line, symbolNode.range.start.character);
+    commands.executeCommand(
+      'editor.action.goToLocations',
+      window.activeTextEditor?.document.uri,
+      start,
+      [],
+      'goto',
+      ''
+    );
   });
 };
 

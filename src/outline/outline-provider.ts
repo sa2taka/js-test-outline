@@ -90,7 +90,7 @@ export class OutlineProvider implements TreeDataProvider<SymbolNode> {
   async #buildView(textDocument: TextDocument): Promise<void> {
     const sourceFile = compile(textDocument.getText());
 
-    const tree: SymbolNode[] = visitTestNode(sourceFile, this.config);
+    const tree: SymbolNode[] = visitTestNode(sourceFile, this.config, sourceFile);
 
     this.roots = tree;
   }
