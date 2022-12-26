@@ -1,4 +1,5 @@
 import {
+  CancellationToken,
   ExtensionContext,
   ProviderResult,
   TextDocument,
@@ -82,7 +83,6 @@ export class OutlineProvider implements TreeDataProvider<SymbolNode> {
 
     const tree: SymbolNode[] = visitTestNode(sourceFile, this.config);
 
-    console.log(tree);
     this.roots = tree;
   }
 }

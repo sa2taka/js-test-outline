@@ -11,7 +11,7 @@ export const visitTestNode = (node: Node, config: Config): SymbolNode[] => {
   const childTestSymbols: SymbolNode[] = [];
   node.forEachChild((child) => {
     if (isCallExpression(child)) {
-      const currentSymbolNode = new SymbolNode(child);
+      const currentSymbolNode = new SymbolNode(child, config);
 
       if (
         !isGroup(currentSymbolNode.description ?? '', config.groupNames) &&
