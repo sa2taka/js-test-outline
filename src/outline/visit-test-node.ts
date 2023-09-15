@@ -21,8 +21,11 @@ export const visitTestNode = (node: Node, config: Config, sourceFile: SourceFile
         return;
       }
 
-      const children = visitTestNode(child, config, sourceFile);
-      currentSymbolNode.appendChild(...children);
+      if (isGroup(currentSymbolNode.description ?? '', config.groupNames)) {
+        const children = visitTestNode(child, config, sourceFile);
+        currentSymbolNode.appendChild(...children);
+      }
+
       childTestSymbols.push(currentSymbolNode);
     } else {
       const result = visitTestNode(child, config, sourceFile);
