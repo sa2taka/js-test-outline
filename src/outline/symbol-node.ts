@@ -36,10 +36,7 @@ export class SymbolNode extends TreeItem {
   constructor(tsNode: CallExpression, private config: OutlineProviderConfig, sourceFile: SourceFile) {
     const expression = trimArgsAndBrackets(trimQuote(tsNode.expression.getText()));
     const name = trimQuote(tsNode.arguments[0]?.getText() ?? '');
-    super(
-      name,
-      isGroup(expression, config.groupNames) ? TreeItemCollapsibleState.Expanded : TreeItemCollapsibleState.None
-    );
+    super(name, TreeItemCollapsibleState.Expanded);
 
     this.kind = tsNode.kind;
     this.range = {
