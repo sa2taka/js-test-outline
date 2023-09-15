@@ -17,7 +17,7 @@
   "main": "./dist/extension.js",
   "contributes": {
     "views": {
-      "test": [
+      "test-outline-view": [
         {
           "type": "tree",
           "id": "js-test-outline-view",
