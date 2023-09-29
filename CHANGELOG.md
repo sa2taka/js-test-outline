@@ -1,4 +1,4 @@
-r# Change Log
+# Change Log
 
 All notable changes to the "js-test-outline" extension will be documented in this file.
 
