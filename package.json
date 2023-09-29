@@ -3,7 +3,7 @@
   "publisher": "sa2taka",
   "displayName": "js-test-outline",
   "description": "Outline for JavaScript/TypeScript test",
-  "version": "0.0.1",
+  "version": "0.1.2",
   "engines": {
     "vscode": "^1.74.0"
   },
