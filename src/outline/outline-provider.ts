@@ -13,19 +13,12 @@ import { compile } from '../typescript/compile';
 import { SymbolNode } from './symbol-node';
 import { visitTestNode } from './visit-test-node';
 
-export type OutlineProviderConfig = {
-  groupNames: string[];
-  testNames: string[];
-  syncExpand: boolean;
-  enableExpandLeaf: boolean;
-};
-
 export class OutlineProvider implements TreeDataProvider<SymbolNode> {
   context: ExtensionContext;
   lastSelectedLine: number | undefined;
   roots: SymbolNode[] | undefined;
 
-  constructor(context: ExtensionContext, private config: OutlineProviderConfig) {
+  constructor(context: ExtensionContext) {
     this.context = context;
 
     this.#initEventListeners();
@@ -79,7 +72,7 @@ export class OutlineProvider implements TreeDataProvider<SymbolNode> {
     }
     const sourceFile = compile(textDocument.getText(), compileConfig);
 
-    const tree: SymbolNode[] = visitTestNode(sourceFile, this.config, sourceFile);
+    const tree: SymbolNode[] = visitTestNode(sourceFile, sourceFile);
 
     this.roots = tree;
   }

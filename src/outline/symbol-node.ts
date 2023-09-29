@@ -1,6 +1,6 @@
 import { CallExpression, LineAndCharacter, SourceFile, SyntaxKind } from 'typescript';
 import { Command, ThemeColor, ThemeIcon, TreeItem, TreeItemCollapsibleState } from 'vscode';
-import { OutlineProviderConfig } from './outline-provider';
+import { getEnableExpandLeaf } from '../config';
 import { isGroup, isTest } from './symbol-type';
 
 const quotes = '"\'`';
@@ -33,14 +33,12 @@ export class SymbolNode extends TreeItem {
     return new ThemeColor('symbolIcon.functionForeground');
   }
 
-  constructor(tsNode: CallExpression, private config: OutlineProviderConfig, sourceFile: SourceFile) {
+  constructor(tsNode: CallExpression, sourceFile: SourceFile) {
     const expression = trimArgsAndBrackets(trimQuote(tsNode.expression.getText()));
     const name = trimQuote(tsNode.arguments[0]?.getText() ?? '');
     super(
       name,
-      isTest(expression, config.testNames) && !config.enableExpandLeaf
-        ? TreeItemCollapsibleState.None
-        : TreeItemCollapsibleState.Expanded
+      isTest(expression) && !getEnableExpandLeaf() ? TreeItemCollapsibleState.None : TreeItemCollapsibleState.Expanded
     );
 
     this.kind = tsNode.kind;
@@ -68,7 +66,7 @@ export class SymbolNode extends TreeItem {
     if (this.description?.includes('todo')) {
       return new ThemeIcon('extensions-configure-recommended');
     }
-    if (isGroup(this.description ?? '', this.config.groupNames)) {
+    if (isGroup(this.description ?? '')) {
       return new ThemeIcon('symbol-function');
     }
     return new ThemeIcon('symbol-value');

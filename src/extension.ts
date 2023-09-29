@@ -1,5 +1,5 @@
 import { commands, ExtensionContext, Position, Selection, window } from 'vscode';
-import { getActiveWorkspace, getEnableExpandLeaf, getGroupNames, getSyncExpand, getTestNames } from './config';
+import { getActiveWorkspace, getSyncExpand } from './config';
 import { OutlineProvider } from './outline/outline-provider';
 import { SymbolNode } from './outline/symbol-node';
 
@@ -10,20 +10,14 @@ export const activate = async (context: ExtensionContext) => {
     return;
   }
 
-  const outlineProviderConfig = {
-    groupNames: getGroupNames(),
-    testNames: getTestNames(),
-    syncExpand: getSyncExpand(),
-    enableExpandLeaf: getEnableExpandLeaf(),
-  };
-  const provider = new OutlineProvider(context, outlineProviderConfig);
+  const provider = new OutlineProvider(context);
 
   const treeView = window.createTreeView('js-test-outline-view', {
     treeDataProvider: provider,
   });
 
   treeView.onDidExpandElement(async (event) => {
-    if (!outlineProviderConfig.syncExpand) {
+    if (!getSyncExpand()) {
       return;
     }
     if (!window.activeTextEditor) {
@@ -40,7 +34,7 @@ export const activate = async (context: ExtensionContext) => {
   });
 
   treeView.onDidCollapseElement(async (event) => {
-    if (!outlineProviderConfig.syncExpand) {
+    if (!getSyncExpand()) {
       return;
     }
     if (!window.activeTextEditor) {
