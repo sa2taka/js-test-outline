@@ -16,6 +16,8 @@ import { visitTestNode } from './visit-test-node';
 export type OutlineProviderConfig = {
   groupNames: string[];
   testNames: string[];
+  syncExpand: boolean;
+  enableExpandLeaf: boolean;
 };
 
 export class OutlineProvider implements TreeDataProvider<SymbolNode> {

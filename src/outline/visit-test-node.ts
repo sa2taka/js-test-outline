@@ -5,6 +5,8 @@ import { isGroup, isTest } from './symbol-type';
 export type Config = {
   groupNames: string[];
   testNames: string[];
+  syncExpand: boolean;
+  enableExpandLeaf: boolean;
 };
 
 export const visitTestNode = (node: Node, config: Config, sourceFile: SourceFile): SymbolNode[] => {

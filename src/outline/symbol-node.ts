@@ -1,7 +1,7 @@
 import { CallExpression, LineAndCharacter, SourceFile, SyntaxKind } from 'typescript';
 import { Command, ThemeColor, ThemeIcon, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { OutlineProviderConfig } from './outline-provider';
-import { isGroup } from './symbol-type';
+import { isGroup, isTest } from './symbol-type';
 
 const quotes = '"\'`';
 
@@ -36,7 +36,12 @@ export class SymbolNode extends TreeItem {
   constructor(tsNode: CallExpression, private config: OutlineProviderConfig, sourceFile: SourceFile) {
     const expression = trimArgsAndBrackets(trimQuote(tsNode.expression.getText()));
     const name = trimQuote(tsNode.arguments[0]?.getText() ?? '');
-    super(name, TreeItemCollapsibleState.Expanded);
+    super(
+      name,
+      isTest(expression, config.testNames) && !config.enableExpandLeaf
+        ? TreeItemCollapsibleState.None
+        : TreeItemCollapsibleState.Expanded
+    );
 
     this.kind = tsNode.kind;
     this.range = {

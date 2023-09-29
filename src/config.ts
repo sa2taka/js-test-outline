@@ -30,3 +30,11 @@ export const getGroupNames = (): string[] => {
 export const getTestNames = (): string[] => {
   return vscode.workspace.getConfiguration('js-test-outline').get('testNames')!;
 };
+
+export const getSyncExpand = (): boolean => {
+  return vscode.workspace.getConfiguration('js-test-outline').get('syncExpand') ?? true;
+};
+
+export const getEnableExpandLeaf = (): boolean => {
+  return vscode.workspace.getConfiguration('js-test-outline').get('enableExpandLeaf') ?? true;
+};

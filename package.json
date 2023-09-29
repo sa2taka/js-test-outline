@@ -43,6 +43,16 @@
             "test"
           ],
           "description": "function name that declare test(e.g. test, it)"
+        },
+        "js-test-outline.syncExpand": {
+          "type": "boolean",
+          "default": true,
+          "description": "sync expanding and collapsing between editor and outline view"
+        },
+        "js-test-outline.enableExpandLeaf": {
+          "type": "boolean",
+          "default": true,
+          "description": "enable expanding and collapsing leaf node"
         }
       }
     }
