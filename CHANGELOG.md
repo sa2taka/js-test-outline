@@ -4,6 +4,11 @@ All notable changes to the "js-test-outline" extension will be documented in thi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.1.3]
+
+- [Improve]: optimize fold and unfold execution.
+    - to be not change selection.
+
 ## [0.1.2]
 
 - [Feature]: to be able to disable `expand/collapse between code and tree` feature.
