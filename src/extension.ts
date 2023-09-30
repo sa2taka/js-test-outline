@@ -23,14 +23,11 @@ export const activate = async (context: ExtensionContext) => {
     if (!window.activeTextEditor) {
       return;
     }
-    window.activeTextEditor.selection = new Selection(
-      event.element.range.start.line,
-      0,
-      event.element.range.start.line,
-      0
-    );
-
-    await commands.executeCommand('editor.unfold');
+    await commands.executeCommand('editor.unfold', {
+      levels: 1,
+      direction: 'up',
+      selectionLines: [event.element.range.start.line],
+    });
   });
 
   treeView.onDidCollapseElement(async (event) => {
@@ -40,14 +37,12 @@ export const activate = async (context: ExtensionContext) => {
     if (!window.activeTextEditor) {
       return;
     }
-    window.activeTextEditor.selection = new Selection(
-      event.element.range.start.line,
-      0,
-      event.element.range.start.line,
-      0
-    );
 
-    await commands.executeCommand('editor.fold');
+    await commands.executeCommand('editor.fold', {
+      levels: 1,
+      direction: 'up',
+      selectionLines: [event.element.range.start.line],
+    });
   });
 
   commands.registerCommand('js-test-outline.moveTo', (symbolNode: SymbolNode) => {
