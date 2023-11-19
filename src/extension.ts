@@ -1,15 +1,9 @@
-import { commands, ExtensionContext, Position, Selection, window } from 'vscode';
-import { getActiveWorkspace, getSyncExpand, getSyncSelection } from './config';
+import { commands, ExtensionContext, Position, window } from 'vscode';
+import { getSyncExpand, getSyncSelection } from './config';
 import { OutlineProvider } from './outline/outline-provider';
 import { SymbolNode } from './outline/symbol-node';
 
 export const activate = async (context: ExtensionContext) => {
-  const workspace = getActiveWorkspace();
-  if (!workspace) {
-    window.showErrorMessage('Workspace is not activated');
-    return;
-  }
-
   const provider = new OutlineProvider(context);
 
   const treeView = window.createTreeView('js-test-outline-view', {
@@ -17,10 +11,10 @@ export const activate = async (context: ExtensionContext) => {
   });
 
   window.onDidChangeTextEditorSelection((e) => {
-    if(!getSyncSelection())  {
+    if (!getSyncSelection()) {
       return;
     }
-    
+
     const firstSelectionStart = e.selections[0].start;
 
     const symbolNode = provider.findSymbolNode(firstSelectionStart);
