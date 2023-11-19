@@ -1,5 +1,5 @@
 import { commands, ExtensionContext, Position, Selection, window } from 'vscode';
-import { getActiveWorkspace, getSyncExpand } from './config';
+import { getActiveWorkspace, getSyncExpand, getSyncSelection } from './config';
 import { OutlineProvider } from './outline/outline-provider';
 import { SymbolNode } from './outline/symbol-node';
 
@@ -17,6 +17,10 @@ export const activate = async (context: ExtensionContext) => {
   });
 
   window.onDidChangeTextEditorSelection((e) => {
+    if(!getSyncSelection())  {
+      return;
+    }
+    
     const firstSelectionStart = e.selections[0].start;
 
     const symbolNode = provider.findSymbolNode(firstSelectionStart);

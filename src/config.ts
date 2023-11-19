@@ -38,3 +38,7 @@ export const getSyncExpand = (): boolean => {
 export const getEnableExpandLeaf = (): boolean => {
   return vscode.workspace.getConfiguration('js-test-outline').get('enableExpandLeaf') ?? true;
 };
+
+export const getSyncSelection = ():boolean => {
+  return vscode.workspace.getConfiguration('js-test-outline').get('syncSelection') ?? true;
+}

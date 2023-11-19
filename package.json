@@ -53,6 +53,11 @@
           "type": "boolean",
           "default": true,
           "description": "enable expanding and collapsing leaf node"
+        },
+        "js-test-outline.syncSelection": {
+          "type": "boolean",
+          "default": true,
+          "description": "sync the selection between editor and outline view"
         }
       }
     }
