@@ -1,5 +1,5 @@
 import { CallExpression, LineAndCharacter, SourceFile, SyntaxKind } from 'typescript';
-import { Command, ThemeColor, ThemeIcon, TreeItem, TreeItemCollapsibleState } from 'vscode';
+import { Command, Position, ThemeColor, ThemeIcon, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { getEnableExpandLeaf } from '../config';
 import { isGroup, isTest } from './symbol-type';
 
@@ -19,6 +19,7 @@ export class SymbolNode extends TreeItem {
   name: string;
   description: string | undefined;
 
+  parent: SymbolNode | undefined;
   children: Array<SymbolNode>;
 
   public command: Command = {
@@ -33,7 +34,7 @@ export class SymbolNode extends TreeItem {
     return new ThemeColor('symbolIcon.functionForeground');
   }
 
-  constructor(tsNode: CallExpression, sourceFile: SourceFile) {
+  constructor(tsNode: CallExpression, sourceFile: SourceFile, parent?: SymbolNode) {
     const expression = trimArgsAndBrackets(trimQuote(tsNode.expression.getText()));
     const name = trimQuote(tsNode.arguments[0]?.getText() ?? '');
     super(
@@ -50,10 +51,39 @@ export class SymbolNode extends TreeItem {
     this.description = expression;
     this.children = [];
     this.iconPath = this.#suggestIcon();
+    this.parent = parent;
   }
 
   appendChild(...children: SymbolNode[]) {
     this.children.push(...children);
+  }
+
+  findChildNearlyPosition(position: Position): SymbolNode | undefined {
+    if (!this.hasPosition(position)) {
+      return undefined;
+    }
+
+    const nearlyChild = this.children
+      .map((child) => child.findChildNearlyPosition(position))
+      .filter((s): s is SymbolNode => Boolean(s))[0];
+
+    return nearlyChild ?? this;
+  }
+
+  hasPosition(position: Position): boolean {
+    if (this.range.start.line < position.line && position.line < this.range.end.line) {
+      return true;
+    }
+
+    if (this.range.start.line === position.line && position.character >= this.range.start.character) {
+      return true;
+    }
+
+    if (this.range.end.line === position.line && position.character <= this.range.end.character) {
+      return true;
+    }
+
+    return false;
   }
 
   #suggestIcon(): ThemeIcon {

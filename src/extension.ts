@@ -16,6 +16,16 @@ export const activate = async (context: ExtensionContext) => {
     treeDataProvider: provider,
   });
 
+  window.onDidChangeTextEditorSelection((e) => {
+    const firstSelectionStart = e.selections[0].start;
+
+    const symbolNode = provider.findSymbolNode(firstSelectionStart);
+
+    if (symbolNode) {
+      treeView.reveal(symbolNode, { select: true });
+    }
+  });
+
   treeView.onDidExpandElement(async (event) => {
     if (!getSyncExpand()) {
       return;

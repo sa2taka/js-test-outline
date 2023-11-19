@@ -2,6 +2,7 @@ import {
   Event,
   EventEmitter,
   ExtensionContext,
+  Position,
   ProviderResult,
   TextDocument,
   TreeDataProvider,
@@ -15,7 +16,6 @@ import { visitTestNode } from './visit-test-node';
 
 export class OutlineProvider implements TreeDataProvider<SymbolNode> {
   context: ExtensionContext;
-  lastSelectedLine: number | undefined;
   roots: SymbolNode[] | undefined;
 
   constructor(context: ExtensionContext) {
@@ -38,6 +38,17 @@ export class OutlineProvider implements TreeDataProvider<SymbolNode> {
     }
 
     return [];
+  }
+
+  getParent(element: SymbolNode): ProviderResult<SymbolNode> {
+    return element.parent;
+  }
+
+  findSymbolNode(position: Position): SymbolNode | undefined {
+    return (
+      this.roots?.map((root) => root.findChildNearlyPosition(position)).filter((n): n is SymbolNode => Boolean(n))[0] ??
+      undefined
+    );
   }
 
   #initEventListeners() {
