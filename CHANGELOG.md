@@ -4,6 +4,11 @@ All notable changes to the "js-test-outline" extension will be documented in thi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.2.0]
+
+- [Feature]: sync the selection between code and tree
+- [Bug Fix]: fix error when workspace is not activated
+
 ## [0.1.3]
 
 - [Improve]: optimize fold and unfold execution.
