@@ -10,18 +10,30 @@ export const activate = async (context: ExtensionContext) => {
     treeDataProvider: provider,
   });
 
+  let prevSelectionLine = -1;
+
   window.onDidChangeTextEditorSelection((e) => {
     if (!getSyncSelection()) {
       return;
     }
 
     const firstSelectionStart = e.selections[0].start;
+    // Do not trigger the event when moving within the same line to avoid a bug that occurs when editing test title.
+    // It is not common to have multiple tests on the same line in Jest, so it is considered safe.
+    if (firstSelectionStart.line === prevSelectionLine) {
+      return;
+    }
+    prevSelectionLine = firstSelectionStart.line;
 
     const symbolNode = provider.findSymbolNode(firstSelectionStart);
 
     if (symbolNode) {
       treeView.reveal(symbolNode, { select: true });
     }
+  });
+
+  window.onDidChangeActiveTextEditor(() => {
+    prevSelectionLine = -1;
   });
 
   treeView.onDidExpandElement(async (event) => {
