@@ -12,8 +12,14 @@ export const activate = async (context: ExtensionContext) => {
 
   let prevSelectionLine = -1;
 
+  let isTreeViewFocused = false;
+
+  treeView.onDidChangeVisibility((e) => {
+    isTreeViewFocused = e.visible;
+  });
+
   window.onDidChangeTextEditorSelection((e) => {
-    if (!getSyncSelection()) {
+    if (!getSyncSelection() || !isTreeViewFocused) {
       return;
     }
 
