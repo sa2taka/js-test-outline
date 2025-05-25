@@ -4,7 +4,7 @@ All notable changes to the "js-test-outline" extension will be documented in thi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [0.2.1]
+## [0.2.2]
 
 - [Bug Fix]: Fixed an issue where opening a test file would focus the TreeView even when it was not previously focused
 
